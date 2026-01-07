@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harapan Desa - BUMDes Visioner untuk Pembangunan Berkelanjutan</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome untuk ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            @apply bg-gray-100 dark:bg-gray-800;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            @apply bg-gray-400 dark:bg-gray-600 rounded-full;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            @apply bg-gray-500 dark:bg-gray-500;
+        }
+        
+        /* Animation untuk card */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+        }
+        
+        /* Smooth transition untuk dark mode */
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        /* Parallax effect untuk hero */
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Custom animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        /* Modal styles */
+        .modal-backdrop {
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .modal-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #9ca3af;
+            border-radius: 3px;
+        }
+        
+        /* Progress bar animation */
+        @keyframes progressFill {
+            from {
+                width: 0;
+            }
+        }
+        
+        .progress-fill {
+            animation: progressFill 1.5s ease-out;
+        }
+        
+        /* Tab indicator */
+        .tab-indicator {
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 w-full z-40 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 bg-gradient-to-br from-purple-600 to-blue-500 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-seedling text-white"></i>
+                </div>
+                <span class="text-xl font-bold">Harapan Desa</span>
+            </div>
+            
+            <div class="flex items-center space-x-6">
+                <a href="#about" class="hidden md:block hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Tentang</a>
+                <a href="#business" class="hidden md:block hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Unit Usaha</a>
+                <a href="#values" class="hidden md:block hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Nilai</a>
+                <a href="#gallery" class="hidden md:block hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Galeri</a>
+                <a href="#contact" class="hidden md:block hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Kontak</a>
+                
+                <!-- Dark Mode Toggle -->
+                <button id="dark-mode-toggle" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-toggle" class="md:hidden p-2">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+            <div class="container mx-auto px-4 py-4 space-y-3">
+                <a href="#about" class="block hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Tentang</a>
+                <a href="#business" class="block hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Unit Usaha</a>
+                <a href="#values" class="block hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Nilai</a>
+                <a href="#gallery" class="block hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Galeri</a>
+                <a href="#contact" class="block hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Kontak</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center parallax-bg" 
+             style="background-image: url('https://picsum.photos/seed/village-hero/1920/1080.jpg')">
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/60 to-black/80"></div>
+        
+        <!-- Content -->
+        <div class="relative z-10 container mx-auto px-4 text-center text-white fade-in-up">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                Membangun <span class="gradient-text">Kemandirian Ekonomi</span> Desa
+            </h1>
+            <p class="text-lg md:text-xl max-w-3xl mx-auto mb-10 text-gray-200">
+                Mengubah potensi lokal menjadi peluang investasi berkelanjutan yang memberikan dampak nyata bagi masyarakat dan lingkungan
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#business" class="px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-500 rounded-full font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all">
+                    Eksplorasi Unit Usaha
+                </a>
+                <a href="#contact" class="px-8 py-4 bg-white/20 backdrop-blur-md border border-white/30 rounded-full font-semibold hover:bg-white/30 transition-all">
+                    Peluang Kerja Sama
+                </a>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+            <i class="fas fa-chevron-down text-2xl"></i>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white dark:bg-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">
+                    Tentang <span class="gradient-text">Harapan Desa</span>
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <img src="https://picsum.photos/seed/village-people/600/400.jpg" alt="Kegiatan Masyarakat" class="rounded-2xl shadow-xl">
+                    </div>
+                    <div>
+                        <p class="text-lg mb-6 leading-relaxed">
+                            BUMDes Harapan Desa lahir dari visi kolektif masyarakat untuk menciptakan kemandirian ekonomi yang berkelanjutan. Kami bukan sekadar entitas bisnis, melainkan gerakan sosial yang mengintegrasikan kearifan lokal dengan inovasi modern.
+                        </p>
+                        <p class="text-lg mb-6 leading-relaxed">
+                            Melalui pendekatan partisipatif, kami mengidentifikasi potensi unik desa dan mengembangkannya menjadi unit usaha yang tidak hanya menghasilkan keuntungan finansial, tetapi juga menciptakan lapangan kerja, melestarikan budaya, dan menjaga kelestarian lingkungan.
+                        </p>
+                        <p class="text-lg leading-relaxed">
+                            Setiap investasi di BUMDes Harapan Desa adalah investasi pada masa depan berkelanjutan—dimana pertumbuhan ekonomi berjalan seiring dengan pemberdayaan masyarakat dan pelestarian sumber daya alam.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
+                    <div class="text-center">
+                        <div class="text-3xl md:text-4xl font-bold text-purple-600 dark:text-purple-400 mb-2">12+</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400">Unit Usaha</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl md:text-4xl font-bold text-purple-600 dark:text-purple-400 mb-2">250+</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400">Masyarakat Terlibat</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl md:text-4xl font-bold text-purple-600 dark:text-purple-400 mb-2">85%</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400">Pertumbuhan Tahunan</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl md:text-4xl font-bold text-purple-600 dark:text-purple-400 mb-2">100%</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400">Praktik Berkelanjutan</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Business Units Section -->
+    <section id="business" class="py-20 bg-gray-50 dark:bg-gray-900">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">
+                Unit Usaha <span class="gradient-text">Unggulan</span>
+            </h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Agriculture Card -->
+                <div class="card-hover bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('https://picsum.photos/seed/agriculture/400/300.jpg')"></div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-seedling text-green-600 dark:text-green-400"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold">Pertanian Modern</h3>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            Pertanian organik dengan teknologi terkini, menghasilkan produk premium dengan nilai tambah tinggi.
+                        </p>
+                        <button onclick="openModal('agriculture')" class="text-purple-600 dark:text-purple-400 font-medium hover:underline">
+                            Pelajari Lebih Lanjut <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Fisheries Card -->
+                <div class="card-hover bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('https://picsum.photos/seed/fisheries/400/300.jpg')"></div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-fish text-blue-600 dark:text-blue-400"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold">Perikanan Berkelanjutan</h3>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            Budidaya perikanan dengan sistem resirkulasi, memproduksi ikan berkualitas tinggi.
+                        </p>
+                        <button onclick="openModal('fisheries')" class="text-purple-600 dark:text-purple-400 font-medium hover:underline">
+                            Pelajari Lebih Lanjut <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- SME Card -->
+                <div class="card-hover bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('https://picsum.photos/seed/sme/400/300.jpg')"></div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-store text-orange-600 dark:text-orange-400"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold">UMKM Kreatif</h3>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            Inkubasi UMKM lokal dengan produk inovatif, menggabungkan warisan budaya dengan desain modern.
+                        </p>
+                        <button onclick="openModal('sme')" class="text-purple-600 dark:text-purple-400 font-medium hover:underline">
+                            Pelajari Lebih Lanjut <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Agrotourism Card -->
+                <div class="card-hover bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('https://picsum.photos/seed/agrotourism/400/300.jpg')"></div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-mountain text-purple-600 dark:text-purple-400"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold">Agrowisata</h3>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            Destinasi wisata berbasis komunitas yang menawarkan pengalaman autentik kehidupan desa.
+                        </p>
+                        <button onclick="openModal('agrotourism')" class="text-purple-600 dark:text-purple-400 font-medium hover:underline">
+                            Pelajari Lebih Lanjut <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Values Section -->
+    <section id="values" class="py-20 bg-white dark:bg-gray-800">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">
+                Nilai & <span class="gradient-text">Keunggulan Kompetitif</span>
+            </h2>
+            
+            <div class="max-w-5xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-chart-line text-purple-600 dark:text-purple-400"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Transparansi Pengelolaan</h3>
+                        <p class="text-gray-600 dark:text-gray-400">
+                            Sistem pelaporan real-time dengan akses terbuka bagi semua stakeholder, membangun kepercayaan melalui keterbukaan informasi.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-recycle text-purple-600 dark:text-purple-400"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Model Usaha Berkelanjutan</h3>
+                        <p class="text-gray-600 dark:text-gray-400">
+                            Pendekatan triple bottom line yang mengintegrasikan profitabilitas, tanggung jawab sosial, dan kelestarian lingkungan.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-map-marked-alt text-purple-600 dark:text-purple-400"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Akses Langsung ke Potensi Lokal</h3>
+                        <p class="text-gray-600 dark:text-gray-400">
+                            Jaringan kuat dengan produsen lokal, memastikan pasokan berkualitas dengan biaya kompetitif dan rantai nilai yang efisien.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-coins text-purple-600 dark:text-purple-400"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Dampak Ekonomi Jangka Panjang</h3>
+                        <p class="text-gray-600 dark:text-gray-400">
+                            Model bisnis yang menciptakan nilai berkelanjutan bagi komunitas lokal dengan reinvestasi profit untuk pengembangan berkelanjutan.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-handshake text-purple-600 dark:text-purple-400"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Kolaborasi Strategis Terbuka</h3>
+                        <p class="text-gray-600 dark:text-gray-400">
+                            Struktur fleksibel yang memungkinkan kemitraan strategis dengan investor, pemerintah, dan sektor swasta untuk pertumbuhan bersama.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-users text-purple-600 dark:text-purple-400"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Pemberdayaan Masyarakat</h3>
+                        <p class="text-gray-600 dark:text-gray-400">
+                            Program pelatihan berkelanjutan yang meningkatkan kapasitas lokal, menciptakan talenta yang siap bersaing di era modern.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-20 bg-gray-50 dark:bg-gray-900">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">
+                Galeri <span class="gradient-text">Visual Desa</span>
+            </h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div class="relative group overflow-hidden rounded-lg">
+                    <img src="https://picsum.photos/seed/gallery1/400/400.jpg" alt="Aktivitas Pertanian" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                        <p class="text-white p-4 font-medium">Inovasi Pertanian Lokal</p>
+                    </div>
+                </div>
+                
+                <div class="relative group overflow-hidden rounded-lg">
+                    <img src="https://picsum.photos/seed/gallery2/400/400.jpg" alt="Produk UMKM" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                        <p class="text-white p-4 font-medium">Produk UMKM Berkualitas</p>
+                    </div>
+                </div>
+                
+                <div class="relative group overflow-hidden rounded-lg">
+                    <img src="https://picsum.photos/seed/gallery3/400/400.jpg" alt="Kegiatan Masyarakat" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                        <p class="text-white p-4 font-medium">Kolaborasi Komunitas</p>
+                    </div>
+                </div>
+                
+                <div class="relative group overflow-hidden rounded-lg">
+                    <img src="https://picsum.photos/seed/gallery4/400/400.jpg" alt="Wisata Desa" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                        <p class="text-white p-4 font-medium">Destinasi Wisata Berkelanjutan</p>
+                    </div>
+                </div>
+                
+                <div class="relative group overflow-hidden rounded-lg">
+                    <img src="https://picsum.photos/seed/gallery5/400/400.jpg" alt="Pelatihan Masyarakat" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                        <p class="text-white p-4 font-medium">Program Pemberdayaan</p>
+                    </div>
+                </div>
+                
+                <div class="relative group overflow-hidden rounded-lg">
+                    <img src="https://picsum.photos/seed/gallery6/400/400.jpg" alt="Produk Perikanan" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                        <p class="text-white p-4 font-medium">Budidaya Perikanan Modern</p>
+                    </div>
+                </div>
+                
+                <div class="relative group overflow-hidden rounded-lg">
+                    <img src="https://picsum.photos/seed/gallery7/400/400.jpg" alt="Kegiatan Anak" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                        <p class="text-white p-4 font-medium">Pendidikan Generasi Penerus</p>
+                    </div>
+                </div>
+                
+                <div class="relative group overflow-hidden rounded-lg">
+                    <img src="https://picsum.photos/seed/gallery8/400/400.jpg" alt="Fasilitas Desa" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                        <p class="text-white p-4 font-medium">Infrastruktur Berkualitas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section id="contact" class="py-20 bg-gradient-to-br from-purple-600 to-blue-500 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">
+                Bergabunglah dalam Perjalanan Transformasi Desa
+            </h2>
+            <p class="text-xl max-w-3xl mx-auto mb-10 text-gray-100">
+                Jadilah bagian dari ekosistem investasi berdampak yang menciptakan nilai ekonomi, sosial, dan lingkungan yang berkelanjutan
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                <a href="#" class="px-8 py-4 bg-white text-purple-600 rounded-full font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all flex items-center justify-center">
+                    <i class="fab fa-whatsapp mr-2"></i> Hubungi via WhatsApp
+                </a>
+                <a href="#" class="px-8 py-4 bg-white/20 backdrop-blur-md border border-white/30 rounded-full font-semibold hover:bg-white/30 transition-all flex items-center justify-center">
+                    <i class="fas fa-envelope mr-2"></i> Kirim Email Proposal
+                </a>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                <div>
+                    <i class="fas fa-map-marker-alt text-3xl mb-3"></i>
+                    <h3 class="font-semibold mb-2">Lokasi</h3>
+                    <p class="text-gray-100">Jl. Desa Sejahtera No. 1, Kecamatan Harapan, Kabupaten Maju</p>
+                </div>
+                <div>
+                    <i class="fas fa-phone-alt text-3xl mb-3"></i>
+                    <h3 class="font-semibold mb-2">Telepon</h3>
+                    <p class="text-gray-100">+62 812-3456-7890</p>
+                </div>
+                <div>
+                    <i class="fas fa-envelope text-3xl mb-3"></i>
+                    <h3 class="font-semibold mb-2">Email</h3>
+                    <p class="text-gray-100">invest@harapandesa.id</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-12 bg-gray-900 text-gray-400">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center space-x-2 mb-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-purple-600 to-blue-500 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-seedling text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold text-white">Harapan Desa</span>
+                    </div>
+                    <p class="text-sm">Membangun Kemandirian Ekonomi Desa yang Berkelanjutan</p>
+                </div>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-white transition-colors">
+                        <i class="fab fa-facebook-f text-xl"></i>
+                    </a>
+                    <a href="#" class="hover:text-white transition-colors">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                    <a href="#" class="hover:text-white transition-colors">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="hover:text-white transition-colors">
+                        <i class="fab fa-linkedin-in text-xl"></i>
+                    </a>
+                    <a href="#" class="hover:text-white transition-colors">
+                        <i class="fab fa-youtube text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-sm">
+                <p>&copy; 2023 BUMDes Harapan Desa. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Modal Container -->
+    <div id="modal-container" class="fixed inset-0 z-50 hidden">
+        <!-- Modal Backdrop -->
+        <div class="absolute inset-0 bg-black/50 modal-backdrop" onclick="closeModal()"></div>
+        
+        <!-- Modal Content -->
+        <div class="relative flex items-center justify-center min-h-screen p-4">
+            <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-4xl w-full modal-content">
+                <!-- Close Button -->
+                <button onclick="closeModal()" class="absolute top-4 right-4 z-10 w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                    <i class="fas fa-times text-gray-600 dark:text-gray-400"></i>
+                </button>
+                
+                <!-- Dynamic Content Will Be Inserted Here -->
+                <div id="modal-content"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript -->
+    <script>
+        // Business Units Data
+        const businessUnits = {
+            agriculture: {
+                title: 'Pertanian Modern',
+                icon: 'fa-seedling',
+                color: 'green',
+                heroImage: 'https://picsum.photos/seed/agri-detail/800/400.jpg',
+                description: 'Unit usaha pertanian kami mengintegrasikan teknologi pertanian presisi dengan praktik organik tradisional untuk menghasilkan produk premium dengan nilai tambah tinggi.',
+                overview: 'Dengan luas lahan 50 hektar, kami mengelola pertanian terpadu yang mencakup sayuran organik, buah-buahan eksotis, dan tanaman herbal. Sistem irigasi tetes dan sensor IoT memastikan penggunaan sumber daya yang optimal.',
+                metrics: [
+                    { label: 'Luas Lahan', value: '50 Ha', icon: 'fa-map' },
+                    { label: 'Produksi/Tahun', value: '500 Ton', icon: 'fa-weight' },
+                    { label: 'Pasar', value: 'Domestik & Ekspor', icon: 'fa-globe' },
+                    { label: 'Sertifikasi', value: 'Organik & GlobalGAP', icon: 'fa-certificate' }
+                ],
+                financials: {
+                    revenue: 'Rp 2.5 Milyar',
+                    growth: '+45%',
+                    profit: '28%',
+                    roi: '22%'
+                },
+                investment: {
+                    min: 'Rp 500 Juta',
+                    max: 'Rp 5 Milyar',
+                    options: ['Equity', 'Revenue Sharing', 'Joint Venture'],
+                    timeline: '3-5 tahun'
+                },
+                products: [
+                    { name: 'Sayuran Organik', price: 'Rp 25.000/kg', market: 'Supermarket Premium' },
+                    { name: 'Buah Eksotis', price: 'Rp 75.000/kg', market: 'Ekspor Asia' },
+                    { name: 'Herbal Kering', price: 'Rp 150.000/kg', market: 'Industri Farmasi' }
+                ],
+                team: [
+                    { name: 'Ir. Budi Santoso', role: 'Head of Agriculture', experience: '15 tahun' },
+                    { name: 'Dr. Siti Nurhaliza', role: 'Agronomist', experience: '10 tahun' },
+                    { name: 'Ahmad Fadli', role: 'Operations Manager', experience: '8 tahun' }
+                ],
+                gallery: [
+                    'https://picsum.photos/seed/agri1/300/200.jpg',
+                    'https://picsum.photos/seed/agri2/300/200.jpg',
+                    'https://picsum.photos/seed/agri3/300/200.jpg',
+                    'https://picsum.photos/seed/agri4/300/200.jpg'
+                ]
+            },
+            fisheries: {
+                title: 'Perikanan Berkelanjutan',
+                icon: 'fa-fish',
+                color: 'blue',
+                heroImage: 'https://picsum.photos/seed/fish-detail/800/400.jpg',
+                description: 'Budidaya perikanan dengan sistem resirkulasi tertutup (RAS) yang ramah lingkungan dan menghasilkan ikan berkualitas premium.',
+                overview: 'Fasilitas budidaya modern dengan kapasitas 100 ton per siklus. Sistem RAS memungkinkan kontrol penuh atas kualitas air, mengurangi penggunaan air hingga 90% dan eliminasi limbah.',
+                metrics: [
+                    { label: 'Kapasitas Produksi', value: '100 Ton/Siklus', icon: 'fa-database' },
+                    { label: 'Siklus Panen', value: '4-6 Bulan', icon: 'fa-clock' },
+                    { label: 'Spesies', value: 'Lele & Nila', icon: 'fa-fish' },
+                    { label: 'Sertifikasi', value: 'HACCP & ASC', icon: 'fa-certificate' }
+                ],
+                financials: {
+                    revenue: 'Rp 1.8 Milyar',
+                    growth: '+62%',
+                    profit: '32%',
+                    roi: '28%'
+                },
+                investment: {
+                    min: 'Rp 300 Juta',
+                    max: 'Rp 3 Milyar',
+                    options: ['Equipment Leasing', 'Profit Sharing', 'Technology Transfer'],
+                    timeline: '2-4 tahun'
+                },
+                products: [
+                    { name: 'Ikan Lele Premium', price: 'Rp 35.000/kg', market: 'Restoran & Hotel' },
+                    { name: 'Ikan Nila Organik', price: 'Rp 45.000/kg', market: 'Ekspor Timur Tengah' },
+                    { name: 'Pakan Ikan', price: 'Rp 12.000/kg', market: 'Distributor Lokal' }
+                ],
+                team: [
+                    { name: 'Dr. Hendra Wijaya', role: 'Aquaculture Specialist', experience: '12 tahun' },
+                    { name: 'Ratna Sari', role: 'Quality Control', experience: '7 tahun' },
+                    { name: 'Bambang Sutrisno', role: 'Facility Manager', experience: '10 tahun' }
+                ],
+                gallery: [
+                    'https://picsum.photos/seed/fish1/300/200.jpg',
+                    'https://picsum.photos/seed/fish2/300/200.jpg',
+                    'https://picsum.photos/seed/fish3/300/200.jpg',
+                    'https://picsum.photos/seed/fish4/300/200.jpg'
+                ]
+            },
+            sme: {
+                title: 'UMKM Kreatif',
+                icon: 'fa-store',
+                color: 'orange',
+                heroImage: 'https://picsum.photos/seed/sme-detail/800/400.jpg',
+                description: 'Inkubator dan akselerator UMKM lokal yang mengembangkan produk kreatif dengan nilai budaya tinggi dan daya saing global.',
+                overview: 'Membina 50+ UMKM lokal dengan fokus pada produk kerajinan, kuliner, dan fashion. Program inkubasi mencakup pelatihan, akses pembiayaan, dan pengembangan pasar.',
+                metrics: [
+                    { label: 'UMKM Dibina', value: '50+', icon: 'fa-store' },
+                    { label: 'Produk Unggulan', value: '120 SKU', icon: 'fa-box' },
+                    { label: 'Pasar Digital', value: '10 Platform', icon: 'fa-laptop' },
+                    { label: 'Ekspor', value: '5 Negara', icon: 'fa-globe' }
+                ],
+                financials: {
+                    revenue: 'Rp 3.2 Milyar',
+                    growth: '+78%',
+                    profit: '25%',
+                    roi: '30%'
+                },
+                investment: {
+                    min: 'Rp 200 Juta',
+                    max: 'Rp 2 Milyar',
+                    options: ['Venture Capital', 'Revenue Share', 'Equity Partnership'],
+                    timeline: '3-5 tahun'
+                },
+                products: [
+                    { name: 'Kerajinan Tenun', price: 'Rp 500.000/piece', market: 'Boutique & Gallery' },
+                    { name: 'Kuliner Premium', price: 'Rp 75.000/pack', market: 'Online Marketplace' },
+                    { name: 'Fashion Etnik', price: 'Rp 350.000/item', market: 'Domestic & Export' }
+                ],
+                team: [
+                    { name: 'Maya Putri', role: 'Creative Director', experience: '8 tahun' },
+                    { name: 'Rizki Ahmad', role: 'Business Development', experience: '6 tahun' },
+                    { name: 'Dewi Lestari', role: 'Marketing Lead', experience: '9 tahun' }
+                ],
+                gallery: [
+                    'https://picsum.photos/seed/sme1/300/200.jpg',
+                    'https://picsum.photos/seed/sme2/300/200.jpg',
+                    'https://picsum.photos/seed/sme3/300/200.jpg',
+                    'https://picsum.photos/seed/sme4/300/200.jpg'
+                ]
+            },
+            agrotourism: {
+                title: 'Agrowisata',
+                icon: 'fa-mountain',
+                color: 'purple',
+                heroImage: 'https://picsum.photos/seed/tourism-detail/800/400.jpg',
+                description: 'Destinasi wisata berbasis komunitas yang menawarkan pengalaman autentik kehidupan desa dengan fasilitas premium dan ramah lingkungan.',
+                overview: 'Kawasan wisata seluas 20 hektar dengan villa eco-friendly, kebun edukasi, dan area kegiatan outdoor. Mengintegrasikan pariwisata dengan pelestarian budaya dan lingkungan.',
+                metrics: [
+                    { label: 'Luas Area', value: '20 Ha', icon: 'fa-map' },
+                    { label: 'Kapasitas', value: '150 Orang/Hari', icon: 'fa-users' },
+                    { label: 'Fasilitas', value: '15 Villa', icon: 'fa-home' },
+                    { label: 'Rating', value: '4.8/5.0', icon: 'fa-star' }
+                ],
+                financials: {
+                    revenue: 'Rp 4.5 Milyar',
+                    growth: '+92%',
+                    profit: '35%',
+                    roi: '25%'
+                },
+                investment: {
+                    min: 'Rp 1 Milyar',
+                    max: 'Rp 10 Milyar',
+                    options: ['Property Development', 'Management Contract', 'Joint Operation'],
+                    timeline: '5-7 tahun'
+                },
+                products: [
+                    { name: 'Villa Eco-Stay', price: 'Rp 1.5 Juta/malam', market: 'Domestic Tourists' },
+                    { name: 'Paket Edukasi', price: 'Rp 250.000/orang', market: 'School Groups' },
+                    { name: 'Event Venue', price: 'Rp 15 Juta/event', market: 'Corporate & Wedding' }
+                ],
+                team: [
+                    { name: 'Andi Pratama', role: 'Tourism Manager', experience: '11 tahun' },
+                    { name: 'Sarah Wijaya', role: 'Hospitality Lead', experience: '9 tahun' },
+                    { name: 'Yudi Hermawan', role: 'Operations Head', experience: '13 tahun' }
+                ],
+                gallery: [
+                    'https://picsum.photos/seed/tour1/300/200.jpg',
+                    'https://picsum.photos/seed/tour2/300/200.jpg',
+                    'https://picsum.photos/seed/tour3/300/200.jpg',
+                    'https://picsum.photos/seed/tour4/300/200.jpg'
+                ]
+            }
+        };
+        
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const html = document.documentElement;
+        
+        // Check for saved theme preference or default to 'light'
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        
+        // Apply the saved theme
+        if (currentTheme === 'dark') {
+            html.classList.add('dark');
+        }
+        
+        // Toggle dark mode
+        darkModeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            
+            // Save the current theme preference
+            if (html.classList.contains('dark')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        });
+        
+        // Mobile Menu Toggle
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Close mobile menu when clicking on a link
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Add scroll effect to navigation
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg');
+            } else {
+                nav.classList.remove('shadow-lg');
+            }
+        });
+        
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in-up');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all sections
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+        
+        // Modal Functions
+        function openModal(unitId) {
+            const modal = document.getElementById('modal-container');
+            const modalContent = document.getElementById('modal-content');
+            const unit = businessUnits[unitId];
+            
+            if (!unit) return;
+            
+            // Generate modal HTML
+            modalContent.innerHTML = `
+                <!-- Hero Section -->
+                <div class="relative h-64 md:h-80 rounded-t-2xl overflow-hidden">
+                    <img src="${unit.heroImage}" alt="${unit.title}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 text-white">
+                        <div class="flex items-center mb-3">
+                            <div class="w-12 h-12 bg-${unit.color}-500/20 backdrop-blur-sm rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas ${unit.icon} text-2xl"></i>
+                            </div>
+                            <h2 class="text-3xl font-bold">${unit.title}</h2>
+                        </div>
+                        <p class="text-gray-200 max-w-2xl">${unit.description}</p>
+                    </div>
+                </div>
+                
+                <!-- Tabs Navigation -->
+                <div class="border-b border-gray-200 dark:border-gray-700">
+                    <div class="flex space-x-8 px-6">
+                        <button onclick="switchTab('overview')" class="tab-btn py-4 border-b-2 border-purple-600 text-purple-600 dark:text-purple-400 font-medium" data-tab="overview">
+                            Overview
+                        </button>
+                        <button onclick="switchTab('financial')" class="tab-btn py-4 border-b-2 border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 font-medium" data-tab="financial">
+                            Financial
+                        </button>
+                        <button onclick="switchTab('investment')" class="tab-btn py-4 border-b-2 border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 font-medium" data-tab="investment">
+                            Investment
+                        </button>
+                        <button onclick="switchTab('team')" class="tab-btn py-4 border-b-2 border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 font-medium" data-tab="team">
+                            Team
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Tab Content -->
+                <div class="p-6">
+                    <!-- Overview Tab -->
+                    <div id="overview-tab" class="tab-content">
+                        <div class="grid md:grid-cols-2 gap-8 mb-8">
+                            <div>
+                                <h3 class="text-xl font-semibold mb-4">Tentang Unit Usaha</h3>
+                                <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
+                                    ${unit.overview}
+                                </p>
+                                
+                                <h4 class="font-semibold mb-3">Key Metrics</h4>
+                                <div class="grid grid-cols-2 gap-4">
+                                    ${unit.metrics.map(metric => `
+                                        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
+                                            <div class="flex items-center mb-1">
+                                                <i class="fas ${metric.icon} text-${unit.color}-500 mr-2"></i>
+                                                <span class="text-sm text-gray-600 dark:text-gray-400">${metric.label}</span>
+                                            </div>
+                                            <div class="text-lg font-semibold">${metric.value}</div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-semibold mb-3">Produk Unggulan</h4>
+                                <div class="space-y-3">
+                                    ${unit.products.map(product => `
+                                        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                                            <div class="flex justify-between items-start mb-2">
+                                                <h5 class="font-medium">${product.name}</h5>
+                                                <span class="text-purple-600 dark:text-purple-400 font-semibold">${product.price}</span>
+                                            </div>
+                                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                                                <i class="fas fa-store mr-1"></i> ${product.market}
+                                            </p>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h4 class="font-semibold mb-3">Galeri</h4>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            ${unit.gallery.map(img => `
+                                <img src="${img}" alt="Gallery" class="w-full h-32 object-cover rounded-lg hover:scale-105 transition-transform cursor-pointer">
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <!-- Financial Tab -->
+                    <div id="financial-tab" class="tab-content hidden">
+                        <h3 class="text-xl font-semibold mb-6">Kinerja Finansial</h3>
+                        
+                        <div class="grid md:grid-cols-4 gap-6 mb-8">
+                            <div class="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-xl p-6">
+                                <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">Pendapatan Tahunan</div>
+                                <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">${unit.financials.revenue}</div>
+                                <div class="text-sm text-green-600 dark:text-green-400 mt-2">
+                                    <i class="fas fa-arrow-up mr-1"></i> ${unit.financials.growth}
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl p-6">
+                                <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">Profit Margin</div>
+                                <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">${unit.financials.profit}</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-400 mt-2">Industry Avg: 22%</div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl p-6">
+                                <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">ROI</div>
+                                <div class="text-2xl font-bold text-green-600 dark:text-green-400">${unit.financials.roi}</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-400 mt-2">Payback: 3.2 tahun</div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-xl p-6">
+                                <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">Break Even</div>
+                                <div class="text-2xl font-bold text-orange-600 dark:text-orange-400">18 Bulan</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-400 mt-2">Target: 24 bulan</div>
+                            </div>
+                        </div>
+                        
+                        <h4 class="font-semibold mb-4">Proyeksi 5 Tahun</h4>
+                        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6">
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between mb-2">
+                                        <span class="text-sm font-medium">Tahun 1</span>
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">Rp ${(parseInt(unit.financials.revenue.replace(/[^0-9]/g, '')) * 1.2).toLocaleString('id-ID')}</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                                        <div class="bg-purple-600 h-2 rounded-full" style="width: 20%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between mb-2">
+                                        <span class="text-sm font-medium">Tahun 2</span>
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">Rp ${(parseInt(unit.financials.revenue.replace(/[^0-9]/g, '')) * 1.5).toLocaleString('id-ID')}</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                                        <div class="bg-purple-600 h-2 rounded-full" style="width: 35%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between mb-2">
+                                        <span class="text-sm font-medium">Tahun 3</span>
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">Rp ${(parseInt(unit.financials.revenue.replace(/[^0-9]/g, '')) * 2).toLocaleString('id-ID')}</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                                        <div class="bg-purple-600 h-2 rounded-full" style="width: 55%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between mb-2">
+                                        <span class="text-sm font-medium">Tahun 5</span>
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">Rp ${(parseInt(unit.financials.revenue.replace(/[^0-9]/g, '')) * 3.5).toLocaleString('id-ID')}</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                                        <div class="bg-purple-600 h-2 rounded-full" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Investment Tab -->
+                    <div id="investment-tab" class="tab-content hidden">
+                        <h3 class="text-xl font-semibold mb-6">Peluang Investasi</h3>
+                        
+                        <div class="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl p-6 mb-8">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-semibold mb-4">Range Investasi</h4>
+                                    <div class="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">
+                                        ${unit.investment.min} - ${unit.investment.max}
+                                    </div>
+                                    <p class="text-gray-600 dark:text-gray-400">
+                                        Horizon investasi: ${unit.investment.timeline}
+                                    </p>
+                                </div>
+                                
+                                <div>
+                                    <h4 class="font-semibold mb-4">Model Investasi</h4>
+                                    <div class="space-y-2">
+                                        ${unit.investment.options.map(option => `
+                                            <div class="flex items-center">
+                                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                                <span>${option}</span>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h4 class="font-semibold mb-4">Alasan Investasi</h4>
+                        <div class="grid md:grid-cols-2 gap-4 mb-8">
+                            <div class="flex items-start">
+                                <i class="fas fa-chart-line text-purple-600 dark:text-purple-400 mt-1 mr-3"></i>
+                                <div>
+                                    <h5 class="font-medium mb-1">Pertumbuhan Tinggi</h5>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">CAGR 45-92% dengan potensi ekspansi pasar yang besar</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <i class="fas fa-shield-alt text-purple-600 dark:text-purple-400 mt-1 mr-3"></i>
+                                <div>
+                                    <h5 class="font-medium mb-1">Risiko Terkelola</h5>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Diversifikasi produk dan pasar dengan hedging alami</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <i class="fas fa-hands-helping text-purple-600 dark:text-purple-400 mt-1 mr-3"></i>
+                                <div>
+                                    <h5 class="font-medium mb-1">Dampak Sosial</h5>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Memberdayakan 50+ keluarga dan menciptakan lapangan kerja</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <i class="fas fa-leaf text-purple-600 dark:text-purple-400 mt-1 mr-3"></i>
+                                <div>
+                                    <h5 class="font-medium mb-1">Berkelanjutan</h5>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Praktik ESG compliant dengan sertifikasi internasional</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6">
+                            <h4 class="font-semibold mb-4">Proses Investasi</h4>
+                            <div class="space-y-3">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">1</div>
+                                    <div>
+                                        <div class="font-medium">Initial Discussion</div>
+                                        <div class="text-sm text-gray-600 dark:text-gray-400">Presentasi bisnis dan due diligence awal</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">2</div>
+                                    <div>
+                                        <div class="font-medium">Term Sheet & Valuation</div>
+                                        <div class="text-sm text-gray-600 dark:text-gray-400">Negosiasi struktur investasi dan valuasi</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">3</div>
+                                    <div>
+                                        <div class="font-medium">Legal & Due Diligence</div>
+                                        <div class="text-sm text-gray-600 dark:text-gray-400">Verifikasi legal dan finansial komprehensif</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">4</div>
+                                    <div>
+                                        <div class="font-medium">Closing & Integration</div>
+                                        <div class="text-sm text-gray-600 dark:text-gray-400">Penandatanganan dan implementasi investasi</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Team Tab -->
+                    <div id="team-tab" class="tab-content hidden">
+                        <h3 class="text-xl font-semibold mb-6">Tim Manajemen</h3>
+                        
+                        <div class="grid md:grid-cols-3 gap-6">
+                            ${unit.team.map(member => `
+                                <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6 text-center">
+                                    <div class="w-24 h-24 bg-gradient-to-br from-purple-400 to-blue-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                        <i class="fas fa-user text-white text-3xl"></i>
+                                    </div>
+                                    <h4 class="font-semibold text-lg mb-1">${member.name}</h4>
+                                    <p class="text-purple-600 dark:text-purple-400 text-sm mb-2">${member.role}</p>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm">
+                                        <i class="fas fa-briefcase mr-1"></i> ${member.experience}
+                                    </p>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="mt-8 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl p-6">
+                            <h4 class="font-semibold mb-4">Mengapa Tim Kami?</h4>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div class="flex items-start">
+                                    <i class="fas fa-graduation-cap text-purple-600 dark:text-purple-400 mt-1 mr-3"></i>
+                                    <div>
+                                        <h5 class="font-medium mb-1">Ekspertise Industri</h5>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">Kombinasi pengalaman praktis dan akademis yang kuat</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <i class="fas fa-award text-purple-600 dark:text-purple-400 mt-1 mr-3"></i>
+                                    <div>
+                                        <h5 class="font-medium mb-1">Track Record Terbukti</h5>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">Sejarah keberhasilan dalam mengembangkan bisnis</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <i class="fas fa-network-wired text-purple-600 dark:text-purple-400 mt-1 mr-3"></i>
+                                    <div>
+                                        <h5 class="font-medium mb-1">Jaringan Luas</h5>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">Koneksi dengan pemerintah, investor, dan pasar</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <i class="fas fa-heart text-purple-600 dark:text-purple-400 mt-1 mr-3"></i>
+                                    <div>
+                                        <h5 class="font-medium mb-1">Komitmen Sosial</h5>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">Dedikasi nyata pada pemberdayaan masyarakat</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CTA Footer -->
+                <div class="border-t border-gray-200 dark:border-gray-700 p-6 bg-gray-50 dark:bg-gray-800/50 rounded-b-2xl">
+                    <div class="flex flex-col md:flex-row justify-between items-center">
+                        <div class="mb-4 md:mb-0">
+                            <h4 class="font-semibold text-lg mb-1">Tertarik Berinvestasi?</h4>
+                            <p class="text-gray-600 dark:text-gray-400">Tim kami siap mendiskusikan peluang kerja sama</p>
+                        </div>
+                        <div class="flex space-x-3">
+                            <button onclick="closeModal()" class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                Tutup
+                            </button>
+                            <button onclick="contactInvestment('${unit.title}')" class="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-500 text-white rounded-lg hover:shadow-lg transition-all">
+                                <i class="fas fa-phone mr-2"></i> Hubungi Tim Investasi
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Show modal
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('modal-container');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            // Remove active state from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-purple-600', 'text-purple-600', 'dark:text-purple-400');
+                btn.classList.add('border-transparent', 'text-gray-600', 'dark:text-gray-400');
+            });
+            
+            // Show selected tab
+            document.getElementById(`${tabName}-tab`).classList.remove('hidden');
+            
+            // Add active state to clicked button
+            const activeBtn = document.querySelector(`[data-tab="${tabName}"]`);
+            activeBtn.classList.remove('border-transparent', 'text-gray-600', 'dark:text-gray-400');
+            activeBtn.classList.add('border-purple-600', 'text-purple-600', 'dark:text-purple-400');
+        }
+        
+        function contactInvestment(unitName) {
+            // In a real application, this would open a contact form or WhatsApp
+            alert(`Terima kasih minat Anda pada unit usaha ${unitName}!\n\nTim investasi kami akan segera menghubungi Anda.\n\nAnda juga dapat langsung menghubungi:\nWhatsApp: +62 812-3456-7890\nEmail: invest@harapandesa.id`);
+            closeModal();
+        }
+        
+        // Close modal on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
